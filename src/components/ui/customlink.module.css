@@ -1,0 +1,20 @@
+.custom-link {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+  }
+  
+  .custom-link:hover {
+    color: rgb(10, 122, 96);
+    text-decoration: underline;
+  }
+
+  .custom-div {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: transparent;
+    width: 100%;
+    text-align: center;
+  }
+  

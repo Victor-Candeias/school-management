@@ -1,0 +1,30 @@
+.form {
+	background-color: rgb(39, 38, 38);
+	border: 1px solid lightgray;
+	border-radius: 15px;
+	padding: 40px;
+	min-width: 400px;
+	max-width: 400px;
+}
+
+.h2 {
+	color: dodgerblue;
+	padding: 15px;
+	font-size: 2rem;
+	margin: auto;
+	font-family: monospace;
+}
+
+.link {
+	color: dodgerblue;
+	padding: 15px;
+	margin: auto;
+	font-family: monospace;
+	font-size: 1.5rem;
+	text-decoration: underline;
+}
+
+.button-group {
+	display: flex;
+	gap: 10px; /* Adds space between buttons */
+}

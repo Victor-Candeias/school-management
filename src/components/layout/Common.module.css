@@ -1,0 +1,119 @@
+/* Área direita */
+.rightside {
+	height: calc(100vh - 46px); /* Ajusta altura */
+	position: fixed;
+	z-index: 600;
+	left: 0;
+	width: 98%;
+	top: 46px;
+	padding: 10px;
+	overflow-y: auto;
+	display: grid;
+	grid-auto-rows: minmax(200px, 200px);
+	gap: 15px;
+	/* Padrão: 6 colunas */
+	grid-template-columns: repeat(6, minmax(200px, 1fr));
+}
+
+/* Telas menores (máximo de 5 colunas) */
+@media (max-width: 1200px) {
+	.rightside {
+		grid-template-columns: repeat(5, minmax(200px, 1fr));
+	}
+}
+
+/* Telas médias (máximo de 4 colunas) */
+@media (max-width: 1000px) {
+	.rightside {
+		grid-template-columns: repeat(4, minmax(200px, 1fr));
+	}
+}
+
+/* Telas pequenas (máximo de 2 colunas) */
+@media (max-width: 600px) {
+	.rightside {
+		grid-template-columns: repeat(2, minmax(200px, 1fr));
+	}
+}
+
+/* Telas muito pequenas (1 coluna) */
+@media (max-width: 400px) {
+	.rightside {
+		grid-template-columns: repeat(1, minmax(200px, 1fr));
+	}
+}
+
+/* Estilo para os buttons azuis */
+.blue_button {
+	border-radius: 40px 0px 0px 40px;
+	border: 1px solid #2196f3;
+	background-color: transparent;
+	color: #2196f3;
+	transition: 0.3s;
+	box-shadow: 1 4px 6px 0 #2196f3;
+}
+
+.blue_button:hover {
+	background-color: #0b7dda;
+	color: white;
+}
+
+/* Estilo para os buttons verde */
+.green_button {
+	border-radius: 10px;
+	border: 1px solid #16af26;
+	background-color: transparent;
+	color: #16af26;
+	transition: 0.3s;
+	box-shadow: 1 4px 6px 0 #16af26;
+}
+
+.green_button:hover {
+	background-color: #16af26;
+	color: white;
+}
+
+/* Card school */
+.card_school {
+	box-shadow: 4px 4px 10px #1976d2;
+	border: 2px solid white;
+	background-color: #1976d2;
+	color: white;
+	transition: 0.3s;
+	box-shadow: 1 4px 6px 0 #1976d2;
+}
+
+.card_school:hover {
+	background-color: transparent;
+	color: #0a0571;
+}
+
+/* Card year */
+.card_year {
+	box-shadow: 4px 4px 10px #43a047;
+	border: 2px solid white;
+	background-color: #43a047;
+	color: white;
+	transition: 0.3s;
+	box-shadow: 1 4px 6px 0 #43a047;
+}
+
+.card_year:hover {
+	background-color: transparent;
+	color: #43a047;
+}
+
+/* Card classes */
+.card_classes {
+	box-shadow: 4px 4px 10px #29b6f6;
+	border: 2px solid white;
+	background-color: #29b6f6;
+	color: white;
+	transition: 0.3s;
+	box-shadow: 1 4px 6px 0 #29b6f6;
+}
+
+.card_classes:hover {
+	background-color: transparent;
+	color: #29b6f6;
+}

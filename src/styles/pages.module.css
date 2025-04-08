@@ -1,0 +1,14 @@
+/* Container principal */
+.container {
+	height: 100vh; /* Ocupa toda a altura da tela */
+	display: flex;
+	flex-direction: column;
+}
+
+/* Conteúdo principal */
+.content {
+	flex: 1; /* Ocupa o espaço restante */
+	overflow-y: auto; /* Permite rolagem vertical */
+	margin-top: 50px; /* Espaço no topo */
+	display: flex;
+}

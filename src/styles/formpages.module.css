@@ -1,0 +1,11 @@
+.main_container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+}
+
+.button-group {
+	display: flex;
+	gap: 10px; /* Adds space between buttons */
+}

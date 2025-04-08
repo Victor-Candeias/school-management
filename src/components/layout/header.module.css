@@ -1,0 +1,53 @@
+/* main header*/
+.header {
+	position: fixed; 
+	z-index: 1000; 
+	width: 100%; 
+	display: flex;
+	overflow: hidden;
+	background-color: #333;
+	justify-content: space-between; /* Ensures left and right alignment */
+    align-items: center; /* Vertically centers content */
+	padding: 0 10px; /* Add padding to prevent content from sticking to edges */
+}
+
+/* all a tag*/
+.header a {
+	float: left;
+	display: block;
+	color: #f2f2f2;
+	text-align: center;
+	padding: 14px 16px;
+	text-decoration: none;
+	font-size: 14px;
+}
+
+/* all link mouse hover */
+.header a:hover {
+	background-color: #ddd;
+	color: black;
+}
+
+/* left a*/
+.header a.active {
+	background-color: #04aa6d;
+	color: white;
+	margin-left: 10px;
+	width: 150px;
+}
+
+/* right link */
+.header a.right {
+	background-color: #7304aa;
+	color: white;
+	float: right;
+	margin-right: 10px;
+	width: 150px;
+}
+
+/* all labels*/
+.header label {
+	color: white;
+	margin-left: 15px;
+	padding: 14px 16px;
+}

@@ -17,8 +17,9 @@ body {
 }
 
 body {
+  background-image: url("../../public/assets/background.png"); /* Caminho da imagem */
   color: var(--foreground);
-  background: var(--background);
+  /*background: var(--background);*/
   font-family: Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
