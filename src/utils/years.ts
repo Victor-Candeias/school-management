@@ -4,13 +4,13 @@ import { YearsInterface } from "../types/Interfaces"; // Import the types for us
 
 import axios, { AxiosError, isAxiosError } from "axios";
 
-export async function getYearBySchoolId(schoolId: string): Promise<YearsInterface[]> {
+export async function getYearBySchoolId(userId: string, schoolId: string): Promise<YearsInterface[]> {
     try {
         console.log("getYearBySchoolId():schoolId=", schoolId);
 
         const response = await apiSChoolClient.post<YearsInterface[]>(
             "/years/find",
-            { schoolId },
+            { userId, schoolId },
             {
                 headers: {
                     "Content-Type": "application/json",
@@ -82,13 +82,14 @@ interface CreateYearResponse {
 
 // Função para registrar um usuário
 export async function createYear({
+    userId,
     schoolId,
     name,
 }: YearsInterface): Promise<CreateYearResponse> {
     try {
         const response = await apiSChoolClient.post<CreateYearResponse>(
             "/years/add",
-            { schoolId, name }, // Corpo da requisição
+            { userId, schoolId, name }, // Corpo da requisição
             {
                 headers: { "Content-Type": "application/json" },
             }

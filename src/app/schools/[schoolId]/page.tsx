@@ -1,35 +1,40 @@
-// lista de anos da escolaimport SchoolLayout from "../../components/layout/SchoolLayout";
-import ProtectedRoute from "../../../components/layout/ProtectedRoute";
-import Header from "../../../components/layout/header";
-import styles from "../../../styles/pages.module.css"
-import YearLayout from "../../../components/layout/YearLayout";
-import { getYearBySchoolId } from "../../../utils/years";
+import ProtectedRoute from "@/components/layout/ProtectedRoute"; // Import the ProtectedRoute component to protect the route from unauthorized access
+import Header from "@/components/layout/header"; // Import the Header component for the navigation bar
+import styles from "@/styles/pages.module.css"; // Import the CSS file for styling the page layout
+import YearLayout from "@/components/layout/YearLayout"; // Import the YearLayout component to display the details of the selected year
+import { notFound } from "next/navigation"; // Import the notFound function to handle cases when the schoolId is not found
 
-export default async function Year({ params }: { params: { schoolId: string } }) {
-    const { schoolId } = await params;
+/**
+ * Year component: Displays information about a specific school year.
+ * 
+ * This page is protected by the `ProtectedRoute` component, meaning only authenticated users can access it.
+ * It includes a `Header` for navigation and a `YearLayout` component that renders the content related to the selected school year.
+ * If the `schoolId` is not provided or invalid, the page will display a "not found" error.
+ * 
+ * @param {object} params - The URL parameters passed to the page.
+ * @param {string} params.schoolId - The ID of the school selected by the user.
+ */
+export default async function Year({
+	params,
+}: {
+	params: { schoolId: string };
+}) {
+	const { schoolId } = await params; // Extract the schoolId parameter from the URL
 
-    if (!schoolId) return notFound();
-    
-    const yearList = await getYearBySchoolId(schoolId);
+	// If schoolId is not provided or invalid, return a "not found" response
+	if (!schoolId) return notFound();
 
-    console.log(yearList);
+	return (
+		<ProtectedRoute> {/* Protects the page so only authenticated users can access it */}
+			<div className={styles.container}>
+				{/* Top section (Navbar) */}
+				<Header />
 
-    return (
-        <ProtectedRoute>
-            <div className={styles.container}>
-                {/* Parte de Cima (Navbar) */}
-                <Header />
-
-                {/* Parte de Baixo (Conteúdo) */}
-                <div className={styles.content}>
-                    <YearLayout schoolId={schoolId} years={yearList} />
-                </div>
-            </div>
-        </ProtectedRoute>
-    );
+				{/* Bottom section (Content) */}
+				<div className={styles.content}>
+					<YearLayout schoolId={schoolId} /> {/* Renders the YearLayout component, passing the schoolId */}
+				</div>
+			</div>
+		</ProtectedRoute>
+	);
 }
-
-function notFound() {
-    throw new Error("Function not implemented.");
-}
-

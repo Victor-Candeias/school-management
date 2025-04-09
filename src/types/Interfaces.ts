@@ -11,7 +11,8 @@ export interface SchoolInterface {
 }
 
 export interface YearsInterface {
-    id?: string;    // Optional ID for the year
+    _id?: string;    // Optional ID for the year
+    userId: string,
     schoolId: string; // ID of the school associated with the year
     name: string;   // Year name (e.g., "2023-2024 Academic Year")
     status?: number;

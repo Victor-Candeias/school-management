@@ -3,9 +3,13 @@
 import { createContext, useContext, useState, ReactNode } from "react";
 import { useRouter } from "next/navigation"; // Para navegar após logout
 
-interface School {
-	id: string;
-	name: string;
+interface StudentsContext {
+	schoolId: string;
+	schoolName: string;
+	yearId: string;
+	yearName: string;
+	classId: string;
+	className: string;
 }
 
 interface Year {
@@ -22,13 +26,13 @@ interface User {
 
 interface AuthContextType {
 	contextUser: User | null;
-	school: School | null; // Agora usa o objeto School
+	studentContext: StudentsContext | null; // Agora usa o objeto School
 	year: Year | null;
 	refreshFlag: boolean;
 	refreshData: () => void;
 	setLogin: (contextUser: User) => void;
 	setLogout: () => void;
-	setCurrentSchool: (school: School) => void; // Agora recebe um objeto válido
+	setCurrentContext: (studentContext: StudentsContext) => void; // Agora recebe um objeto válido
 	setCurrentYear: (year: Year) => void;
 }
 
@@ -37,7 +41,9 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
 	const [contextUser, setUser] = useState<User | null>(null);
 	const [refreshFlag, setRefreshFlag] = useState<boolean>(false);
-	const [school, setSchool] = useState<School | null>(null);
+	const [studentContext, setStudentContext] = useState<StudentsContext | null>(
+		null
+	);
 	const [year, setYear] = useState<Year | null>(null);
 
 	const router = useRouter();
@@ -57,8 +63,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 		localStorage.removeItem("token"); // Remove o token do armazenamento local
 		router.push("/login"); // Redireciona para a página de login
 	};
-	const setCurrentSchool = (school: School) => {
-		setSchool(school);
+
+	const setCurrentContext = (studentContext: StudentsContext) => {
+		setStudentContext((prev) => ({
+			...prev,
+			...studentContext,
+			yearId: "João", // sobrepõe o yearId com novo valor
+		}));
 	};
 
 	const setCurrentYear = (year: Year) => {
@@ -72,8 +83,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 				refreshData,
 				setLogin,
 				setLogout,
-				setCurrentSchool,
-				school,
+				setCurrentContext,
+				studentContext,
 				setCurrentYear,
 				year,
 				refreshFlag,

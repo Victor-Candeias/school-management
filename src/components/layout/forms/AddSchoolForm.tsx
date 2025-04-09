@@ -5,22 +5,21 @@ import { useRouter } from "next/navigation";
 
 import { SchoolInterface } from "@/types/Interfaces";
 import { createSchool } from "@/utils/schools";
-import { useAuth } from "@/context/AuthContext"; // Importa o contexto
-
-import { toast } from 'react-toastify';
+import { useAuth } from "@/context/AuthContext"; // Import the authentication context to access user data
+import { toast } from "react-toastify";
 
 import formStyles from "./forms.module.css";
 import Input from "@/components/ui/input";
 import Button from "@/components/ui/button";
 
 export default function AddSchoolForm() {
-	const { contextUser } = useAuth();
 	// Initialize all state hooks for form inputs
 	const [schoolCode, setSchoolCode] = useState("");
 	const [schoolName, setSchoolName] = useState("");
 	const [schoolAddress, setSchoolAddress] = useState("");
 	const [schoolEmail, setSchoolEmail] = useState("");
 	const [schoolContact, setSchoolContact] = useState("");
+	const { contextUser } = useAuth(); // Get the user context (userId)
 
 	// Set up Next.js router
 	const router = useRouter();
@@ -65,7 +64,8 @@ export default function AddSchoolForm() {
 			toast.success("School added successfully!");
 
 			// Redirect user back to the schools list
-			router.back();
+			router.push("/schools");
+
 		} catch (error) {
 			// Log and alert the user if an error occurs
 			console.error("Error adding school:", error);
