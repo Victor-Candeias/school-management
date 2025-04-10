@@ -7,6 +7,7 @@ import { SchoolInterface } from "@/types/Interfaces";
 import { createSchool } from "@/utils/schools";
 import { useAuth } from "@/context/AuthContext"; // Import the authentication context to access user data
 import { toast } from "react-toastify";
+import { GenerateGuidId } from "@/utils/utils";
 
 import formStyles from "./forms.module.css";
 import Input from "@/components/ui/input";
@@ -43,6 +44,7 @@ export default function AddSchoolForm() {
 		// Construct school data object based on input values
 		const data: SchoolInterface = {
 			userId: contextUser?.userId ?? "",
+			schoolId: GenerateGuidId(),
 			code: schoolCode,
 			name: schoolName,
 			address: schoolAddress,
@@ -73,7 +75,9 @@ export default function AddSchoolForm() {
 		}
 	};
 
-	const handleCancel = () => {
+	const handleCancel = async (event: React.FormEvent) => {
+		event.preventDefault();
+
 		// Ask for user confirmation before cancelling
 		if (confirm("Are you sure you want to cancel?")) {
 			// Reset all form fields

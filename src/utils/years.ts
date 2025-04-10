@@ -3,11 +3,13 @@ import { apiSChoolClient } from "./apiClient"; // Import the axios instances for
 import { YearsInterface } from "../types/Interfaces"; // Import the types for user and school data
 
 import axios, { AxiosError, isAxiosError } from "axios";
+import { Yrsa } from "next/font/google";
 
-export async function getYearBySchoolId(userId: string, schoolId: string): Promise<YearsInterface[]> {
+export async function getYearBySchoolId(
+	userId: string,
+	schoolId: string
+): Promise<YearsInterface[]> {
     try {
-        console.log("getYearBySchoolId():schoolId=", schoolId);
-
         const response = await apiSChoolClient.post<YearsInterface[]>(
             "/years/find",
             { userId, schoolId },
@@ -30,25 +32,35 @@ export async function getYearBySchoolId(userId: string, schoolId: string): Promi
         }
 
         return response.data;
-
     } catch (error) {
         if ((error as AxiosError).isAxiosError) {
             const axiosError = error as AxiosError;
-            console.error("Axios error:", axiosError.response?.data, axiosError.message);
+			console.error(
+				"Axios error:",
+				axiosError.response?.data,
+				axiosError.message
+			);
         } else {
             console.error("Erro desconhecido:", error);
         }
         
-
         return [];
     }
 }
 
+export async function getYearName(
+	userId: string,
+	schoolId: string,
+	yearId: string
+): Promise<YearsInterface | null> {
+	try {
+		console.log("getYearName();userId=", userId);
+		console.log("getYearName();schoolId=", schoolId);
+		console.log("getYearName();yearId=", yearId);
 
-export async function getAllSchools(): Promise<YearsInterface[]> {
-    try {
-        const response = await apiSChoolClient.get<YearsInterface[]>(
-            "/schools/find",
+		const response = await apiSChoolClient.post<YearsInterface[]>(
+			"/years/find",
+			{ userId, schoolId, yearId },
             {
                 headers: {
                     "Content-Type": "application/json",
@@ -57,25 +69,23 @@ export async function getAllSchools(): Promise<YearsInterface[]> {
             }
         );
 
-        // Verifica se o status é 200 OK e se a resposta tem dados
-        if (
-            response.status === 200 &&
-            (!response.data || response.data.length === 0)
-        ) {
-            console.log("No data found or empty response");
+		// Desestruturação para pegar o primeiro item do array
+		const [firstYear] = response.data;
 
-            return []; // Retorna um array vazio se não houver dados
+		if (!firstYear) {
+			console.log("Nenhum dado encontrado.");
+			return null;
         }
 
-        return response.data;
+		return firstYear;
     } catch (error) {
-        console.error("Erro ao buscar escolas:", error);
-        return []; // Retorna um array vazio em caso de erro
+		console.error("Erro ao buscar o ano:", error);
+		return null;
     }
 }
 
 interface CreateYearResponse {
-    id: string;
+	yearId: string;
     status: number;
     message: string;
 }
@@ -84,12 +94,13 @@ interface CreateYearResponse {
 export async function createYear({
     userId,
     schoolId,
+	yearId,
     name,
 }: YearsInterface): Promise<CreateYearResponse> {
     try {
         const response = await apiSChoolClient.post<CreateYearResponse>(
             "/years/add",
-            { userId, schoolId, name }, // Corpo da requisição
+			{ userId, schoolId, yearId, name }, // Corpo da requisição
             {
                 headers: { "Content-Type": "application/json" },
             }
@@ -98,7 +109,7 @@ export async function createYear({
         console.log("✅ Registro bem-sucedido:", response.data);
 
         return {
-            id: response.data.id,
+			yearId: response.data.yearId,
             status: response.status,
             message: response.data?.message || "Usuário registrado com sucesso!",
         };

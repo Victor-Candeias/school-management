@@ -63,7 +63,7 @@ export default function SchoolLayout() {
 				schools.map((school) => (
 					<Card
 						key={school.id}
-						id={school.code} // School code as the ID
+						id={school.schoolId} // School code as the ID
 						header={school.name} // School name as the header
 						text={school.code} // School code as the main text
 						subText={school.email} // School email as subtext

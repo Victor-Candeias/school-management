@@ -6,6 +6,7 @@ interface InputProps {
 	value: string;
 	placeholder: string;
 	required: boolean;
+	disabled?: boolean;
 	className?: string;
 	onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
@@ -16,6 +17,7 @@ export default function Input({
 	value,
 	placeholder,
 	required,
+	disabled,
 	className,
 	onChange,
 }: InputProps) {
@@ -41,6 +43,7 @@ one-time-code	Código de verificação (exemplo: OTP enviado por e-mail/SMS).
 				name="usrnm"
 				value={value}
 				required={required}
+				disabled = {disabled ?? false}
 				autoComplete={autoComplete}
 			/>
 		</div>

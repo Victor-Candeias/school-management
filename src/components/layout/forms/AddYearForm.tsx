@@ -8,7 +8,7 @@ import Button from "@/components/ui/button"; // Custom Button component
 import { YearsInterface } from "@/types/Interfaces"; // Import interface for years
 import { createYear } from "@/utils/years"; // Function to create a new school year
 import { useAuth } from "@/context/AuthContext"; // Authentication context to access user data
-
+import { GenerateGuidId } from "@/utils/utils";
 /**
  * AddSchoolForm component: A form to add a new school year for a specific school.
  *
@@ -20,8 +20,10 @@ import { useAuth } from "@/context/AuthContext"; // Authentication context to ac
  *
  * @returns {JSX.Element} The rendered form for adding a school year.
  */
-export default function AddSchoolForm({ schoolId }: { schoolId: string }) {
-	const currentSchoolId = schoolId;
+export default function AddYearForm({ schoolId }: { schoolId: string }) {
+	// Check if has values
+	if (!schoolId) throw new Error("Erro: schoolId é obrigatório");
+
 	const returnPath = `/schools/${schoolId}`; // The path to return to after submitting or canceling
 
 	const { contextUser } = useAuth(); // Get the user context to retrieve the user's ID
@@ -48,13 +50,14 @@ export default function AddSchoolForm({ schoolId }: { schoolId: string }) {
 		// Prepare the data for the new school year
 		const data: YearsInterface = {
 			userId: contextUser?.userId ?? "", // Get the userId from context
-			schoolId: currentSchoolId,
+			yearId: GenerateGuidId(),
+			schoolId: schoolId,
 			name: yearName,
 		};
 
 		try {
 			console.log(data);
-			
+
 			// Call the createYear function to add the new year
 			const response = await createYear(data);
 
@@ -75,18 +78,20 @@ export default function AddSchoolForm({ schoolId }: { schoolId: string }) {
 	/**
 	 * Handle the cancel action, prompting the user for confirmation before clearing the form and navigating back.
 	 */
-	const handleCancel = () => {
+	const handleCancel = async (event: React.FormEvent) => {
+		event.preventDefault();
 		if (confirm("Are you sure you want to cancel?")) {
 			setYearName(""); // Clear the year name
 
 			// Navigate back to the school details page
-			router.push(returnPath);
+			router.back();
+			// router.push(returnPath);
 		}
 	};
 
 	return (
 		<form className={formStyles.form} onSubmit={handleSubmit}>
-			<h2 className={formStyles.h2}>Add New School Year</h2>
+			<h2 className={formStyles.h2}>Adicionar novo Ano escolar</h2>
 			<ComboBox
 				options={years} // Pass the list of available years to the ComboBox
 				caption="Select Year"
@@ -96,6 +101,7 @@ export default function AddSchoolForm({ schoolId }: { schoolId: string }) {
 					(e) => setYearName(e.target.options[e.target.selectedIndex].text) // Set the selected year name
 				}
 			/>
+
 			<div className={formStyles["button-group"]}>
 				<Button
 					label="Cancel"

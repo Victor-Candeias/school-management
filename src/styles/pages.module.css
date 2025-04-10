@@ -11,4 +11,6 @@
 	overflow-y: auto; /* Permite rolagem vertical */
 	margin-top: 50px; /* Espaço no topo */
 	display: flex;
+	justify-content: center;  /* Centraliza horizontalmente */
+	align-items: center;      /* Centraliza verticalmente */
 }

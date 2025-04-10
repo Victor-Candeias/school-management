@@ -1,37 +1,16 @@
 import { apiSChoolClient } from "./apiClient"; // Import the axios instances for making API requests
+import { StudentInterface } from "@/types/Interfaces"; // Import the types for user and school data
 
-import { SchoolInterface } from "../types/Interfaces"; // Import the types for user and school data
-
-export async function getSchoolById(id: string): Promise<SchoolInterface> {
+export async function getAllStudents(
+	schoolId: string,
+	yearId: string,
+	classId: string,
+	userId?: string
+): Promise<StudentInterface[]> {
 	try {
-		const response = await apiSChoolClient.post<SchoolInterface>(
-			"/schools/findbyid",
-			{ id },
-			{
-				headers: {
-					"Content-Type": "application/json",
-				},
-				withCredentials: true,
-			}
-		);
-
-		return {
-			...response.data,
-			status: response.status,
-		};
-	} catch (error) {
-		console.error("Erro ao buscar escola:", error);
-		return {} as SchoolInterface; // Retorna um objeto vazio em caso de erro
-	}
-}
-
-export async function getAllSchools(userId?: string): Promise<SchoolInterface[]> {
-	try {
-		console.log("getAllSchools=", userId);
-
-		const response = await apiSChoolClient.post<SchoolInterface[]>(
-			"/schools/find",
-			{ "userId": userId },
+		const response = await apiSChoolClient.post<StudentInterface[]>(
+			"/students/find",
+			{ userId, schoolId, yearId, classId },
 			{
 				headers: {
 					"Content-Type": "application/json",
@@ -57,26 +36,41 @@ export async function getAllSchools(userId?: string): Promise<SchoolInterface[]>
 	}
 }
 
-interface CreateSchoolResponse {
-	id: string;
+interface CreateStudentsResponse {
+	id?: string;
 	status: number;
 	message: string;
 }
 
-// Função para registrar um usuário
-export async function createSchool({
+export async function createStudent({
 	userId,
 	schoolId,
-	code,
-	name,
-	address,
-	email,
-	contact,
-}: SchoolInterface): Promise<CreateSchoolResponse> {
+	yearId,
+	classId,
+	studentsId,
+	className,
+	classYear,
+	classLevel,
+	studentNumber,
+	studentName,
+	studentEmail,
+}: StudentInterface): Promise<CreateStudentsResponse> {
 	try {
-		const response = await apiSChoolClient.post<CreateSchoolResponse>(
-			"/schools/add",
-			{ userId, schoolId, code, name, address, email, contact }, // Corpo da requisição
+		const response = await apiSChoolClient.post<StudentInterface>(
+			"/students/add",
+			{
+				userId,
+				schoolId,
+				yearId,
+				classId,
+				studentsId,
+				className,
+				classYear,
+				classLevel,
+				studentNumber,
+				studentName,
+				studentEmail,
+			}, // Corpo da requisição
 			{
 				headers: { "Content-Type": "application/json" },
 			}

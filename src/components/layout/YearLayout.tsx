@@ -10,7 +10,6 @@ import { useEffect, useState } from "react"; // Importing React hooks for state 
 import { getYearBySchoolId } from "@/utils/years"; // Importing the utility function to fetch years by schoolId
 import { useAuth } from "@/context/AuthContext"; // Importing the context to access authenticated user information
 import Loader from "@/components/ui/loader"; // Importing the Loader component to show a loading spinner
-import { UsingJoinColumnOnlyOnOneSideAllowedError } from "typeorm";
 
 /**
  * YearLayout component: Displays a list of years for a specific school.
@@ -34,14 +33,12 @@ export default function YearLayout({ schoolId }: YearsLayoutProps) {
 	const { contextUser } = useAuth(); // Access the user context (userId) to pass it in the API request
 	const router = useRouter(); // Router to navigate between pages
 
-	const currentSchoolId = schoolId; // Assign the schoolId from the props
-
 	// Fetch the list of years when the component mounts
 	useEffect(() => {
 		const fetchSchools = async () => {
 			const result = await getYearBySchoolId(
 				contextUser?.userId ?? "", // Use the userId from the context, fallback to an empty string if undefined
-				currentSchoolId // Pass the currentSchoolId to the API function
+				schoolId // Pass the currentSchoolId to the API function
 			);
 			setYears(result); // Set the fetched years into the state
 			setLoading(false); // Set loading state to false once the data has been fetched
@@ -59,17 +56,14 @@ export default function YearLayout({ schoolId }: YearsLayoutProps) {
 
 	// Navigate to the page for adding a new year
 	const AddData = (event: React.MouseEvent<HTMLButtonElement>): void => {
-		router.push(`/schools/${currentSchoolId}/new`); // Navigate to the add new year page
+		router.push(`/schools/${schoolId}/new`); // Navigate to the add new year page
 	};
 
 	// Navigate to the page for the selected year
 	const EnterData = (event: React.MouseEvent<HTMLDivElement>) => {
 		const target = event.target as HTMLDivElement;
-
-		alert(target.id);
-
 		console.log(target.id); // Log the selected year's ID
-		router.push(`/schools/${currentSchoolId}/${target.id}`); // Navigate to the selected year's details page
+		router.push(`/schools/${schoolId}/${target.id}`); // Navigate to the selected year's details page
 	};
 
 	// Show a loading spinner while the data is being fetched
@@ -101,8 +95,8 @@ export default function YearLayout({ schoolId }: YearsLayoutProps) {
 			{years &&
 				years.map((item) => (
 					<Card
-						key={item._id}
-						id={item._id ?? "undefine"} // Pass the year ID to the card component
+						key={item.yearId}
+						id={item.yearId} // Pass the year ID to the card component
 						header={item.name} // Display the year name in the header
 						customClass={styles.card_year} // Apply custom styling to the card
 						onClick={EnterData} // Navigate to the selected year details page on click

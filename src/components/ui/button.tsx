@@ -6,7 +6,7 @@ interface InputProps {
 	label: string;
 	customBackground?: string;
 	customColor?: string;
-	handleClick?: () => void;
+	handleClick?: (event: React.FormEvent) => Promise<void>;
 }
 
 export default function Button({

@@ -1,5 +1,5 @@
 import ProtectedRoute from "@/components/layout/ProtectedRoute";
-import AddSchoolYear from "@/components/layout/forms/AddSchoolYear";
+import AddClassForm from "@/components/layout/forms/AddClassForm";
 import styles from "@/styles/formpages.module.css";
 import { notFound } from "next/navigation";
 
@@ -11,7 +11,7 @@ export default async function AddYear({ params }: { params: { schoolId: string, 
 	return (
 		<ProtectedRoute>
 			<div className={styles.main_container}>
-				<AddSchoolYear schoolId={schoolId} />
+				<AddClassForm schoolId={schoolId} yearId={yearId} />
 			</div>
 		</ProtectedRoute>
 	);

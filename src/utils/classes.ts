@@ -1,6 +1,6 @@
 import { apiSChoolClient } from "./apiClient"; // Import the axios instances for making API requests
-
-import { ClassInterface } from "../types/Interfaces"; // Import the types for user and school data
+import { ClassInterface, Levels } from "@/types/Interfaces"; // Import the types for user and school data
+import { GenerateGuidId } from "./utils";
 
 export async function getClassById(id: string): Promise<ClassInterface> {
 	try {
@@ -25,7 +25,11 @@ export async function getClassById(id: string): Promise<ClassInterface> {
 	}
 }
 
-export async function getAllClasses(schoolId: string, yearId: string, userId?: string): Promise<ClassInterface[]> {
+export async function getAllClasses(
+	schoolId: string,
+	yearId: string,
+	userId?: string
+): Promise<ClassInterface[]> {
 	try {
 		const response = await apiSChoolClient.post<ClassInterface[]>(
 			"/class/find",
@@ -55,24 +59,43 @@ export async function getAllClasses(schoolId: string, yearId: string, userId?: s
 	}
 }
 
-interface CreateClassesResponse {
-	id: string;
-	status: number;
-	message: string;
+export async function getLevels(): Promise<Levels[]> {
+	try {
+		const response = await apiSChoolClient.get<string[]>("/class/levels", {
+			headers: {
+				"Content-Type": "application/json",
+			},
+			withCredentials: true,
+		});
+
+		if (!response.data || response.data.length === 0) {
+			console.log("No data found or empty response");
+			return [];
+		}
+
+		return response.data.map((name) => ({
+			id: GenerateGuidId(),
+			name,
+		}));
+	} catch (error) {
+		console.error("Erro ao buscar níveis:", error);
+		return [];
+	}
 }
 
-// Função para registrar um usuário
 export async function createClass({
 	userId,
 	schoolId,
 	yearId,
-	name,
-	schoolYear
-}: ClassInterface): Promise<CreateClassesResponse> {
+	classId,
+	className,
+	classYear,
+	classLevel,
+}: ClassInterface): Promise<ClassInterface | { message: string, status: number  }> {
 	try {
-		const response = await apiSChoolClient.post<CreateClassesResponse>(
-			"/schools/add",
-			{ userId, schoolId, yearId, name, schoolYear }, // Corpo da requisição
+		const response = await apiSChoolClient.post<ClassInterface>(
+			"/class/add",
+			{ userId, schoolId, yearId, classId, className, classYear, classLevel }, // Corpo da requisição
 			{
 				headers: { "Content-Type": "application/json" },
 			}
@@ -81,24 +104,42 @@ export async function createClass({
 		console.log("✅ Registro bem-sucedido:", response.data);
 
 		return {
-			id: response.data.id,
+			...response.data,
 			status: response.status,
-			message: response.data?.message || "Usuário registrado com sucesso!",
 		};
-	} catch (error: unknown) {
-		console.error("❌ Erro no registro:", error);
+	} catch (error) {
+		const errorMessage = error instanceof Error ? error.message : String(error);
+		return { message: errorMessage };
+	}
+}
 
-		if (error instanceof Error) {
-			return {
-				id: "unknown", // Provide a default or placeholder value for id
-				status: 500,
-				message: error.message || "Erro desconhecido no servidor",
-			};
-		}
+export async function getClass(
+	schoolId: string,
+	yearId: string,
+	classId: string,
+	userId?: string
+): Promise<ClassInterface| { message: string, status: number }> {
+	try {
+		const response = await apiSChoolClient.post<ClassInterface>(
+			"/class/find",
+			{ userId, schoolId, yearId, classId },
+			{
+				headers: {
+					"Content-Type": "application/json",
+				},
+				withCredentials: true,
+			}
+		);
+
+		// Verifica se o status é 200 OK e se a resposta tem dados
 		return {
-			id: "unknown", // Provide a default or placeholder value for id
-			status: 500,
-			message: "Erro inesperado ao processar o registro",
+			...response.data,
+			status: response.status,
 		};
+
+		return response.data;
+	} catch (error) {
+		const errorMessage = error instanceof Error ? error.message : String(error);
+		return { message: errorMessage, status: 500 };
 	}
 }
