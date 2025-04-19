@@ -1,0 +1,52 @@
+.content {
+	margin-left: 0;
+	width: 100%;
+	height: calc(100vh - 3rem - 64px); /* Ajuste aqui */
+	padding: 64px; /* empurra o conteúdo pra não ficar por baixo */
+	overflow-x: hidden;
+	overflow-y: auto;
+	display: grid;
+	grid-auto-rows: minmax(230px, 250px);
+	grid-template-columns: repeat(6, minmax(220px, 1fr));
+	background-color: transparent;
+	justify-content: space-between;
+	justify-items: center;
+	gap: 10px;
+}
+
+
+@media (max-width: 1800px) {
+	.content {
+		grid-template-columns: repeat(5, minmax(260px, 1fr));
+	}
+}
+
+@media (max-width: 1600px) {
+	.content {
+		grid-template-columns: repeat(4, minmax(260px, 1fr));
+	}
+}
+
+@media (max-width: 1400px) {
+	.content {
+		grid-template-columns: repeat(3, minmax(260px, 1fr));
+	}
+}
+
+@media (max-width: 1000px) {
+	.content {
+		grid-template-columns: repeat(2, minmax(260px, 1fr));
+	}
+}
+
+@media (max-width: 600px) {
+	.content {
+		grid-template-columns: repeat(1, minmax(260px, 1fr));
+	}
+}
+
+@media (max-width: 400px) {
+	.content {
+		grid-template-columns: repeat(1, minmax(260px, 1fr));
+	}
+}
